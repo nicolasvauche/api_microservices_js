@@ -28,7 +28,7 @@ app.post('/tasks', async (req, res) => {
   try {
     const newTask = await TaskModel.create({
       title: req.body.title,
-      done: req.body.done || false
+      done: req.body.done
     })
     res.status(201).json(newTask)
   } catch (error) {
@@ -39,37 +39,37 @@ app.post('/tasks', async (req, res) => {
 })
 
 app.put('/tasks/:id', async (req, res) => {
-  try {
-    const task = await TaskModel.findByPk(req.params.id)
-    if (task) {
-      task.title = req.body.title || task.title
-      task.done = req.body.done !== undefined ? req.body.done : task.done
-      await task.save()
+  const task = await TaskModel.findByPk(req.params.id)
+  if (task) {
+    try {
+      task.update({
+        title: req.body.title,
+        done: req.body.done
+      })
       res.json(task)
-    } else {
-      res.status(404).json({ error: 'Task not found' })
+    } catch (error) {
+      res
+        .status(422)
+        .json({ error: 'Failed to update task', details: error.message })
     }
-  } catch (error) {
-    res
-      .status(422)
-      .json({ error: 'Failed to update task', details: error.message })
+  } else {
+    res.status(404).json({ error: 'Task not found' })
   }
 })
 
 app.delete('/tasks/:id', async (req, res) => {
-  try {
-    const rowsDeleted = await TaskModel.destroy({
-      where: { id: req.params.id }
-    })
-    if (rowsDeleted) {
-      res.json({ message: 'Task deleted' })
-    } else {
-      res.status(404).json({ error: 'Task not found' })
+  const task = await TaskModel.findByPk(req.params.id)
+  if (task) {
+    try {
+      task.destroy()
+      res.status(204).json({ message: 'Task deleted' })
+    } catch (error) {
+      res
+        .status(422)
+        .json({ error: 'Failed to update task', details: error.message })
     }
-  } catch (error) {
-    res
-      .status(422)
-      .json({ error: 'Failed to delete task', details: error.message })
+  } else {
+    res.status(404).json({ error: 'Task not found' })
   }
 })
 
