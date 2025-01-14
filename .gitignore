@@ -1,4 +1,4 @@
 node_modules
 .vscode
 .DS_Store
-api_microservices_js.db
+db/api_microservices_js.db
