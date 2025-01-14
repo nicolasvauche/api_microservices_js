@@ -33,7 +33,7 @@ app.post('/tasks', async (req, res) => {
     res.status(201).json(newTask)
   } catch (error) {
     res
-      .status(400)
+      .status(422)
       .json({ error: 'Failed to create task', details: error.message })
   }
 })
@@ -51,7 +51,7 @@ app.put('/tasks/:id', async (req, res) => {
     }
   } catch (error) {
     res
-      .status(400)
+      .status(422)
       .json({ error: 'Failed to update task', details: error.message })
   }
 })
@@ -68,7 +68,7 @@ app.delete('/tasks/:id', async (req, res) => {
     }
   } catch (error) {
     res
-      .status(400)
+      .status(422)
       .json({ error: 'Failed to delete task', details: error.message })
   }
 })
