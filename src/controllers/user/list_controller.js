@@ -1,5 +1,5 @@
 const { Op } = require('sequelize')
-const UserModel = require('../../models/user_model')
+const UserModel = require('../../models/user/user_model')
 
 const ListController = {
   async list (req, res) {

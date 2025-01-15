@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const UserModel = require('../models/user_model')
+const UserModel = require('../models/user/user_model')
 const secretKey = '123456'
 
 const AuthService = {
