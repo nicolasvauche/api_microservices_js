@@ -1,5 +1,3 @@
-const AuthService = require('../../services/auth_service')
-
 const ProfileController = {
   async me (req, res) {
     try {
