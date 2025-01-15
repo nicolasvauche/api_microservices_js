@@ -1,24 +1,30 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const { dbConnect } = require('./src/database')
+const http = require('http')
+const app = require('./app')
 
-const authRoutes = require('./src/routes/auth/auth_routes')
-const profileRoutes = require('./src/routes/user/profile_routes')
-const registerRoutes = require('./src/routes/user/register_routes')
-const listRoutes = require('./src/routes/user/list_routes')
+const PORT = process.env.PORT || 3000
 
-const app = express()
-const port = 3000
+const server = http.createServer(app)
 
-app.use(bodyParser.json())
+server.listen(PORT, () => {
+  console.log(`API REST running at http://localhost:${PORT}`)
+})
 
-dbConnect()
+server.on('error', error => {
+  if (error.syscall !== 'listen') {
+    throw error
+  }
 
-app.use('/auth', authRoutes)
-app.use('/users/me', profileRoutes)
-app.use('/users/register', registerRoutes)
-app.use('/users', listRoutes)
-
-app.listen(port, () => {
-  console.log(`API REST running at http://localhost:${port}`)
+  const bind = typeof PORT === 'string' ? `Pipe ${PORT}` : `Port ${PORT}`
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`${bind} requires elevated privileges`)
+      process.exit(1)
+      break
+    case 'EADDRINUSE':
+      console.error(`${bind} is already in use`)
+      process.exit(1)
+      break
+    default:
+      throw error
+  }
 })
