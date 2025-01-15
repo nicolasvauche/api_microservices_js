@@ -5,8 +5,6 @@ const ListController = {
   async list (req, res) {
     try {
       const currentUserId = req.user.id
-      console.log('currentUserId', currentUserId)
-
       const users = await UserModel.findAll({
         where: {
           id: { [Op.ne]: currentUserId }
