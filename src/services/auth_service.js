@@ -17,7 +17,7 @@ const AuthService = {
     const token = jwt.sign({ id: user.id, email: user.email }, secretKey, {
       expiresIn: '1h'
     })
-    return { token, user }
+    return { token }
   },
 
   verifyToken (token) {
